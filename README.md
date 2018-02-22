@@ -41,6 +41,6 @@ Commands:
 
 There are ban IDs in this Skript.
 
-![alt text](http://url/to/img.png)
-![alt text](http://url/to/img.png)
-![alt text](http://url/to/img.png)
+![//ban](https://github.com/ItzCookies/Minecraft-Skript-Watchcat/raw/master/Images/Ban.PNG)
+![//banidinfo](https://raw.githubusercontent.com/ItzCookies/Minecraft-Skript-Watchcat/master/Images/BanIDInfo.PNG)
+![//baninfo](https://raw.githubusercontent.com/ItzCookies/Minecraft-Skript-Watchcat/master/Images/BanInfo.PNG)
