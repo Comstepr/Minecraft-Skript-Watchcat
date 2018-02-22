@@ -96,7 +96,7 @@ command //unban [<offlineplayer>]:
 				if {banned.%arg 1%} is true:
 					unban arg-1
 					unban ip of arg 1
-					execute console command "/essentials:unbanip alv4r"
+					execute console command "/essentials:unbanip %arg 1%"
 					set {banned.%arg 1%} to false
 					set {BanID.%{BanID.%arg 1%}%} to ""
 					set {banID.bannedby.%{BanID.%arg 1%}%} to ""
