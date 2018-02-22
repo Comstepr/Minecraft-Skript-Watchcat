@@ -1,0 +1,176 @@
+# Version: 1.0
+# Made by MLG_PancakeZ
+# Edited by ItzCookies_
+
+
+options:
+	prefix: &7&l[&c&lWatchcat&7&l]
+
+
+#-------------[DO NOT CHANGE ANYTHING BELOW THIS LINE]-------------
+
+	ban_permission: Bans.ban
+
+	banip_permission: Bans.ip
+
+	kick_permission: Bans.kick
+
+	unban_permission: Bans.unban
+
+	baninfo_permission: Bans.info
+
+	notify_permission: Bans.notify
+
+	tban_permission: Bans.tban
+
+
+command //ban [<Offlineplayer>] [<Text>]:
+	trigger:
+		if player has permission "{@ban_permission}":
+			if arg 1 is set:
+				if arg 2 is set:
+					set {banned.%arg 1%} to true
+					set {ban.time.%arg 1%} to now
+					set {ban.reason.%arg 1%} to argument-2
+					set {ban.expire.%arg 1%} to "Never"
+					set {ban.bannedby.%arg 1%} to player
+					set {BanIP.%arg 1%} to "False"
+					set {BanID.%arg 1%} to "%random integer from 1 to 100000000%"
+					set {bannedID.%{BanID.%arg 1%}%} to true
+					set {banID.time.%{BanID.%arg 1%}%} to now
+					set {banID.reason.%{BanID.%arg 1%}%} to argument-2
+					set {banID.expire.%{BanID.%arg 1%}%} to "Never"
+					set {banID.bannedby.%{BanID.%arg 1%}%} to player
+					set {BanIDIP.%{BanID.%arg 1%}%} to "False"
+					set {BanIDPlayer.%{BanID.%arg 1%}%} to "%arg 1%"
+					kick arg 1 due to "&0[&cWATCHCAT&0] &fYou have been banned. &fBanned by: &c%player%&f &fReason: &c%arg 2%. &fBan ID: &c%{BanID.%arg 1%}%"
+					ban arg 1 due to "&0[&cWATCHCAT&0] &fYou have been banned for &c%arg 2% &f by &c%player%&f"
+					loop all players:
+						loop-player has permission "{@notify_permission}"
+						send "{@prefix} &c%player% &7banned &c%arg 1% &7Reason: &c%arg 2%" to loop-player
+				else:
+					send "{@prefix} &c//Ban <Player> <Reason>"
+			else:
+				send "{@prefix} &c//Ban <Player> <Reason>"
+		else:
+			send "{@prefix} &cNo permission"
+
+command //banip [<Offlineplayer>] [<Text>]:
+	trigger:
+		if player has permission "{@banip_permission}":
+			if arg 1 is set:
+				if arg 2 is set:
+					set {banned.%arg 1%} to true
+					set {ban.time.%arg 1%} to now
+					set {ban.reason.%arg 1%} to argument-2
+					set {ban.expire.%arg 1%} to "Never"
+					set {ban.bannedby.%arg 1%} to player
+					set {IP.%arg 1%} to ip of arg 1
+					set {BanIP.%arg 1%} to "True"
+					set {BanID.%arg 1%} to "%random integer from 1 to 100000000%"
+					set {bannedID.%{BanID.%arg 1%}%} to true
+					set {banID.time.%{BanID.%arg 1%}%} to now
+					set {banID.reason.%{BanID.%arg 1%}%} to argument-2
+					set {banID.expire.%{BanID.%arg 1%}%} to "Never"
+					set {banID.bannedby.%{BanID.%arg 1%}%} to player
+					set {BanIDIP.%{BanID.%arg 1%}%} to "False"
+					set {BanIDPlayer.%{BanID.%arg 1%}%} to "%arg 1%"
+					kick arg 1 due to "&0[&cWATCHCAT&0] &fYou have been banned. &fBanned by: &c%player%&f &fReason: &c%arg 2%. &fBan ID: &c%{BanID.%arg 1%}%"
+					ban arg 1 due to "&0[&cWATCHCAT&0] &fYou have been banned. &fBanned by: &c%player%&f &fReason: &c%arg 2%. &fBan ID: &c%{BanID.%arg 1%}%"
+					ban ip of arg 1 due to "&0[&cWATCHCAT&0] &fYou have been banned. &fBanned by: &c%player%&f &fReason: &c%arg 2%. &fBan ID: &c%{BanID.%arg 1%}%"
+					loop all players:
+						loop-player has permission "{@notify_permission}"
+						send "{@prefix} &c%player% &7ip-banned &c%arg 1% &7Reason: &c%arg 2%" to loop-player
+				else:
+					send "{@prefix} &c//Banip <Player> <Reason>"
+			else:
+				send "{@prefix} &c//Banip <Player> <Reason>"
+		else:
+			send "{@prefix} &cNo permission"
+
+
+command //unban [<offlineplayer>]:
+	trigger:
+		if player has permission "@unban_permission":
+			if arg 1 is set:
+				if {banned.%arg 1%} is true:
+					unban arg-1
+					unban ip of arg 1
+					execute console command "/essentials:unbanip alv4r"
+					set {banned.%arg 1%} to false
+					set {BanID.%{BanID.%arg 1%}%} to ""
+					set {banID.bannedby.%{BanID.%arg 1%}%} to ""
+					set {banID.reason.%{BanID.%arg 1%}%} to ""
+					set {banID.time.%{BanID.%arg 1%}%} to ""
+					set {BanIDIP.%{BanID.%arg 1%}%} to ""
+					set {banID.expire.%{BanID.%arg 1%}%} to ""
+					set {BanIDPlayer.%{BanID.%arg 1%}%} to ""
+					loop all players:
+						loop-player has permission "{@notify_permission}"
+						send "{@prefix} &c%player% &7unbanned &c%arg 1%" to loop-player
+				else:
+					set {banned.%arg 1%} to false
+					execute console command "/essentials:unban %arg-1%"
+					send "{@prefix} &c%player% &7unbanned &c%arg 1%" to player
+			else:
+				send "{@prefix} &c/Unban <Player>"
+		else:
+			send "{@prefix} &cNo permission"
+
+
+
+command //kick [<Offlineplayer>] [<Text>]:
+	trigger:
+		if player has permission "{@kick_permission}":
+			if arg 1 is set:
+				if arg 2 is set:
+					kick arg 1 due to "&0[&cWATCHCAT&0] &FYou have been kicked by %player% for %arg 2%"
+					loop all players:
+						loop-player has permission "{@notify_permission}"
+						send "{@prefix} &c%player% &7kicked &c%arg 1% &7Reason: &c%arg 2%" to loop-player
+				else:
+					send "{@prefix} &c//kick <Player> <Reason>"
+			else:
+				send "{@prefix} &c//kick <Player> <Reason>"
+		else:
+			send "{@prefix} &cNo permission"
+
+command //baninfo [<offlineplayer>]:
+	trigger:
+		if player has permission "{@baninfo_permission}":
+			if arg is set:
+				if {banned.%arg 1%} is true:
+					send "&7&m------------------------"
+					send "&c&lBanned player&7: %arg 1%"
+					send "&c&lBanned by&7: %{ban.bannedby.%arg 1%}%"
+					send "&c&lBan reason&7: %{ban.reason.%arg 1%}%"
+					send "&c&lTime of Ban (EST) &7: %{ban.time.%arg 1%}%"
+					send "&c&lIP Banned &7: %{BanIP.%arg 1%}%"
+					send "&c&lExpiration&7: %{ban.expire.%arg 1%}%"
+					send "&c&lBan ID&7: %{BanID.%arg 1%}%"
+					send "&7&m------------------------"
+				else:
+					send "{@prefix} &cThis player is not banned"
+			else:
+				send "{@prefix} &c//Baninfo <Player>"
+		else:
+			send "{@prefix} &cNo Permission"
+					
+
+
+command //banidinfo [<Text>]:
+	trigger:
+		if player has permission "{@baninfo_permission}":
+			if arg is set:
+				send "&7&m------------------------"
+				send "&c&lBanned by&7: %{banID.bannedby.%arg 1%}%"
+				send "&c&lBan reason&7: %{banID.reason.%arg 1%}%"
+				send "&c&lTime of Ban (EST) &7: %{banID.time.%arg 1%}%"
+				send "&c&lIP Banned &7: %{BanIDIP.%arg 1%}%"
+				send "&c&lExpiration&7: %{banID.expire.%arg 1%}%"
+				send "&c&lBanned player&7: %{BanIDPlayer.%arg 1%}%"
+				send "&7&m------------------------"
+		else:
+			send "{@prefix} &c//BanIdInfo <Ban ID>"
+
+					
