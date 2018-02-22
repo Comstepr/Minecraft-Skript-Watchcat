@@ -36,6 +36,9 @@ command //wchelp:
 			send "&b//kick <player> <reason> - Kicks the player that you want to kick."
 			send "&b//baninfo <player> - Check why a player is banned, show why a player is banned and more."
 			send "&b//banidinfo <ban ID> - Check why a player is banned, show why a player is banned and more using a ban ID."
+			send "&b//report <player> <reason> - Reports the player that you want to report."
+			send "&b//reports <view/comment/list/flag> - Views, comments, lists and/or flags reports."
+			send "&b//reset - Resets the report system. Deletes all reports."
 			send "&bGithub Repository: https://github.com/ItzCookies/Minecraft-Skript-Watchcat"
 			send "&bPlease update when there is a new update if you want to. There might be bug fixes and more."
 		else:
@@ -60,8 +63,8 @@ command //ban [<Offlineplayer>] [<Text>]:
 					set {banID.bannedby.%{BanID.%arg 1%}%} to player
 					set {BanIDIP.%{BanID.%arg 1%}%} to "False"
 					set {BanIDPlayer.%{BanID.%arg 1%}%} to "%arg 1%"
-					kick arg 1 due to "&0[&cWATCHCAT&0] &fYou have been banned. &fBanned by: &c%player%&f &fReason: &c%arg 2%. &fBan ID: &c%{BanID.%arg 1%}%"
-					ban arg 1 due to "&0[&cWATCHCAT&0] &fYou have been banned for &c%arg 2% &f by &c%player%&f"
+					kick arg 1 due to "&0[&cWATCHCAT&0] &cYou have been banned. &cBanned by: &c%player%&c &cReason: &c%arg 2%. &cBan ID: &c%{BanID.%arg 1%}%"
+					ban arg 1 due to "&0[&cWATCHCAT&0] &cYou have been banned for &c%arg 2% &c by &c%player%&c"
 					loop all players:
 						loop-player has permission "{@notify_permission}"
 						send "{@prefix} &c%player% &7banned &c%arg 1% &7Reason: &c%arg 2%" to loop-player
@@ -92,9 +95,9 @@ command //banip [<Offlineplayer>] [<Text>]:
 					set {banID.bannedby.%{BanID.%arg 1%}%} to player
 					set {BanIDIP.%{BanID.%arg 1%}%} to "False"
 					set {BanIDPlayer.%{BanID.%arg 1%}%} to "%arg 1%"
-					kick arg 1 due to "&0[&cWATCHCAT&0] &fYou have been banned. &fBanned by: &c%player%&f &fReason: &c%arg 2%. &fBan ID: &c%{BanID.%arg 1%}%"
-					ban arg 1 due to "&0[&cWATCHCAT&0] &fYou have been banned. &fBanned by: &c%player%&f &fReason: &c%arg 2%. &fBan ID: &c%{BanID.%arg 1%}%"
-					ban ip of arg 1 due to "&0[&cWATCHCAT&0] &fYou have been banned. &fBanned by: &c%player%&f &fReason: &c%arg 2%. &fBan ID: &c%{BanID.%arg 1%}%"
+					kick arg 1 due to "&0[&cWATCHCAT&0] &cYou have been banned. &cBanned by: &c%player%&c &cReason: &c%arg 2%. &cBan ID: &c%{BanID.%arg 1%}%"
+					ban arg 1 due to "&0[&cWATCHCAT&0] &cYou have been banned. &cBanned by: &c%player%&c &cReason: &c%arg 2%. &cBan ID: &c%{BanID.%arg 1%}%"
+					ban ip of arg 1 due to "&0[&cWATCHCAT&0] &cYou have been banned. &cBanned by: &c%player%&c &cReason: &c%arg 2%. &cBan ID: &c%{BanID.%arg 1%}%"
 					loop all players:
 						loop-player has permission "{@notify_permission}"
 						send "{@prefix} &c%player% &7ip-banned &c%arg 1% &7Reason: &c%arg 2%" to loop-player
@@ -141,7 +144,7 @@ command //kick [<Offlineplayer>] [<Text>]:
 		if player has permission "{@kick_permission}":
 			if arg 1 is set:
 				if arg 2 is set:
-					kick arg 1 due to "&0[&cWATCHCAT&0] &FYou have been kicked by %player% for %arg 2%"
+					kick arg 1 due to "&0[&cWATCHCAT&0] &cYou have been kicked by %player% for %arg 2%"
 					loop all players:
 						loop-player has permission "{@notify_permission}"
 						send "{@prefix} &c%player% &7kicked &c%arg 1% &7Reason: &c%arg 2%" to loop-player
@@ -193,3 +196,172 @@ command //banidinfo [<Text>]:
 			send "{@prefix} &cNo permission"
 
 					
+variables:
+	{id} = 0
+options:
+
+
+
+	UseTheCommand: Bans.report
+	CommentOnAReview: Bans.reports
+	
+
+
+	Arg-1NotCorrectUsage:   &7&l[&c&lWatchcat&7&l] &c//report &c<name> &c<&creason&c>&c    
+	Arg-2NotCorrectUsage:   &7&l[&c&lWatchcat&7&l] &c//report &c<name> &c<reason>&c    		
+#reports view	
+	IDNotCorrectUsageReport:  &7&l[&c&lWatchcat&7&l] &c &c//reports <view> <ID>   
+	Arg-1NotCorrectUsageReport:   &7&l[&c&lWatchcat&7&l] &c//reports <view/comment/list/flag>   
+	Arg-3NotCorrectUsageComment:   &7&l[&c&lWatchcat&7&l] &c//reports <comment> <ID> <comment>  
+#reports comment
+	Arg-2NotCorrectUsageComment:   &7&l[&c&lWatchcat&7&l] &c//reports <comment> <ID> <comment>    
+#flag comment
+	Arg-2NotCorrectUsageCommentflag:   &7&l[&c&lWatchcat&7&l] &c//reports <flag> <ID> <Open/Closed>    
+	Arg-3NotCorrectUsageCommentflag:   &7&l[&c&lWatchcat&7&l] &c//reports <comment> <ID> <Open/Closed>!    
+
+	notonline: &7&l[&c&lWatchcat&7&l] &c%arg 1% is not online
+	
+  #And Also Amount of Comments In /reports comment!
+	reportwaitingtime: 3 #in seconds
+	delay: &cYou'll have to wait: &7 %{_difference}% &c&l| &cbefore using this command again!
+	delaymin: 0 #in minutes
+
+	ReportWait: &7&l[&c&lWatchcat&7&l] &cPlease wait
+	ReportSuccesful: &7&l[&c&lWatchcat&7&l] &c&lReports > &c&lID: &c%{id}% &cNote: You have reported &c%arg 1%&c for &c%arg 2%&c. &cThank you. Your report has been filed. &cPlayer you reported: &8(&c %arg 1%&8 ) &cDate (YYYY-MM-DD) (EST): &c%{date::%{id}%}% &cReason: &c> &c%arg 2% &c&lNote: &cAbusing the reporting system is bannable.
+	#review
+	ViewingAReport: &7&l[&c&lWatchcat&7&l] &c=============[&cReport Viewer&c]=============&c> Viewing record with ID &c%{id}%: &cReported player: &c%arg 1% | &cPlayer who reported: &c%player% | &cDate (YYYY-MM-DD) (EST): &c%{date::%{id}%}% | &cReason: &c%arg 2%
+	Commented: &7&l[&c&lWatchcat&7&l] &c &cYou have successfully commented on &cTICKET &cID: &c%arg-2%&c!
+	commenthowitlooks: &7&l[&c&lWatchcat&7&l] &c%player%: %arg 3%
+	list: &7&l[&c&lWatchcat&7&l] &c%player%
+	flaghasbeensettoopen: &7&l[&c&lWatchcat&7&l] [&cStaff&c]: Flag has been set to Open!
+	flaghasbeensettoclosed: &7&l[&c&lWatchcat&7&l] &c[&cStaff&c]: Flag has been set to Closed!
+
+	NoPermissionError:   &7&l[&c&lWatchcat&7&l] &cYou don't have permissions for this!    
+	#review
+	NoIDCouldBeFound: &7&l[&c&lWatchcat&7&l] &c[&cStaff&c]: ID, couldn't be found!
+	NoReports: &7&l[&c&lWatchcat&7&l] &c &c&lReports &c> &c[&cStaff&c]: &eThere are no report's at the moment! Good job!
+	canonlybeopenorclosed: &7&l[&c&lWatchcat&7&l] &c> &c[&cStaff&c]: You may only use Closed/Open!
+	closedthread: &7&l[&c&lWatchcat&7&l] &c &c&lReports &c> &c[&cStaff&c]:&c You can't comment on a closed thread!
+	
+	
+	
+	
+	
+command //report [<offline player>] [<text>]:
+	trigger:
+		if player has permission "{@UseTheCommand}":
+			if arg 1 is set:
+				if arg 2 is set:
+					set {_difference} to difference between {delayreport.%player%} and now  
+					if {_difference} is less than {@delaymin} minutes: 
+						set  {_difference} to difference between {_difference} and {@delaymin} minutes 
+						message "{@delay}" 
+						stop
+					set {delayreport.%player%} to now 
+					send "{@ReportWait}"
+					add 1 to {id}
+					wait {@reportwaitingtime} seconds
+					add "{@list}" to {list::*}
+					set {date::%{id}%} to now
+					set {flag::%{id}%} to "&2&lOpen"
+					set {report::%{id}%} to "{@ViewingAReport}"
+					send "{@ReportSuccesful}"
+				else:
+					send "{@Arg-2NotCorrectUsage}"
+			else:
+				send "{@Arg-1NotCorrectUsage}"
+		else: 
+			send "{@NoPermissionError}"
+command //reports [<text>] [<text>] [<text>]:
+	trigger:
+		if player has permission "{@CommentOnAReview}":
+			if arg 1 isn't set:
+				send "{@Arg-1NotCorrectUsageReport}"
+				stop
+			else if arg 1 isn't "view" or "comment" or "list" or "flag":
+				send "{@Arg-1NotCorrectUsageReport}"
+				stop
+				#view
+			else if arg 1 is "view":
+				if arg 2 is set:
+					if {report::%arg 2%} is set:
+						message "%{report::%arg 2%}%"
+						message "&7flag: %{flag::%arg-2%}%"
+						set {_a} to 0
+						loop {comment::%arg-2%::*}:
+							add 1 to {_a}
+						message "&7Found &c%{_a}% &7comments:"
+						message "&c&m-------------------------"
+						if {_a} is greater than 0:
+							loop {comment::%arg-2%::*}:
+								message "&c%loop-index%&7. [ID:&c%loop-index%&7] %loop-value%"
+						message "&c&l&m=============[&c&lReport Viewer&c&l&m]============="
+						stop
+					message "{@NoIDCouldBeFound}"
+					stop
+				message "{@IDNotCorrectUsageReport}"
+				#comment
+			else if arg 1 is "comment":
+				if arg 2 is not set:
+					message "{@Arg-2NotCorrectUsageComment}"
+					stop
+				if {report::%arg 2%} is not set:
+					message "{@NoIDCouldBeFound}"
+					stop
+				if {flag::%arg-2%} contains "Closed":
+					message "{@closedthread}"
+					stop
+				if arg 3 is not set:
+					message "{@Arg-3NotCorrectUsageComment}"
+					stop
+				add "{@commenthowitlooks}" to {comment::%arg-2%::*}
+				message "{@Commented}"
+			else if arg 1 is "list":
+				set {_a} to 0
+				loop {list::*}:
+					add 1 to {_a}
+					if {_a} is greater than 0:
+						message "&c&l - &c%loop-index%&7. %loop-value%"
+				if {_a} is 0:
+					message "{@NoReports}"
+					stop
+			else if arg 1 is "flag":
+				if arg 2 is not set:
+					send "{@Arg-2NotCorrectUsageCommentflag}"
+					stop
+				if arg 3 is not set:
+					send "{@Arg-3NotCorrectUsageCommentflag}"
+					stop
+				else:
+					if {report::%arg-2%} is set:
+						if arg 3 isn't "Closed" or "Open":
+							send "{@canonlybeopenorclosed}"
+							stop
+						else:
+							if arg 3 is "Open":
+								send "{@flaghasbeensettoopen}"
+								set {flag::%arg-2%} to "&2&nOpen"
+							else:
+								send "{@flaghasbeensettoclosed}"
+								set {flag::%arg-2%} to "&c&nClosed"
+					else:
+						message "{@NoIDCouldBeFound}"
+				
+			
+
+					
+			
+		else:
+			send "{@NoPermissionError}"
+command //reset:
+	trigger:
+		if player has permission "*":
+			delete {comment::*}
+			delete {report::*}
+			set {id} to 0
+			delete {date::*}
+			delete {flag::*} 
+			delete {list::*}
+		else:
+			send "{@NoPermissionError}"
+		

@@ -8,7 +8,7 @@ Credits:
 Hypixel (I got the idea about the ban IDs from Hypixel)
 MLG_PancakeZ (MLG_PancakeZ developed the Skript. I just downloaded it and edited it.)
 Essentials (Some commands in this Skript use some Essentials's commands.)
-
+simonsejse (This player made the Skript that adds reporting players. https://www.spigotmc.org/resources/report-skript-advanced.28487/)
 Permissions:
 
 Ban permission: Bans.ban
@@ -17,6 +17,9 @@ Kick permission: Bans.kick
 Unban permission: Bans.unban
 Ban Info and Ban IP Info permission: Bans.info
 Notify permission: Bans.notify
+Report permission: Bans.report
+Permission to read reports: Bans.reports
+Permission to reset reports: *
 
 Plugins required:
 
@@ -30,12 +33,16 @@ If you are using this Skript script:
 
 Commands:
 
+//wchelp
 //ban
 //banip
 //unban
 //kick
 //baninfo
 //banidinfo
+//report
+//reports
+//reset (Permission: *)
 
 //unban bans the player that you wanted to unban (If you used another plugin to ban the player, you can use //unban to unban them.)
 
