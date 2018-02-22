@@ -2,6 +2,10 @@
 # Made by MLG_PancakeZ
 # Edited by ItzCookies_
 
+variables:
+	{id} = 0
+	{BanID} = 0
+
 
 options:
 	prefix: &7&l[&c&lWatchcat&7&l]
@@ -38,7 +42,7 @@ command //wchelp:
 			send "&b//banidinfo <ban ID> - Check why a player is banned, show why a player is banned and more using a ban ID."
 			send "&b//report <player> <reason> - Reports the player that you want to report."
 			send "&b//reports <view/comment/list/flag> - Views, comments, lists and/or flags reports."
-			send "&b//reset - Resets the report system. Deletes all reports."
+			send "&b//reset - Resets the system. Deletes all reports."
 			send "&bGithub Repository: https://github.com/ItzCookies/Minecraft-Skript-Watchcat"
 			send "&bPlease update when there is a new update if you want to. There might be bug fixes and more."
 		else:
@@ -55,7 +59,8 @@ command //ban [<Offlineplayer>] [<Text>]:
 					set {ban.expire.%arg 1%} to "Never"
 					set {ban.bannedby.%arg 1%} to player
 					set {BanIP.%arg 1%} to "False"
-					set {BanID.%arg 1%} to "%random integer from 1 to 100000000%"
+					add 1 to {BanID}
+					set {BanID.%arg 1%} to {BanID}
 					set {bannedID.%{BanID.%arg 1%}%} to true
 					set {banID.time.%{BanID.%arg 1%}%} to now
 					set {banID.reason.%{BanID.%arg 1%}%} to argument-2
@@ -196,8 +201,7 @@ command //banidinfo [<Text>]:
 			send "{@prefix} &cNo permission"
 
 					
-variables:
-	{id} = 0
+
 options:
 
 
