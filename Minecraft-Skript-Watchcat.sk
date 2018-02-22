@@ -1,4 +1,4 @@
-# Version: 1.0
+# Version: 1.1
 # Made by MLG_PancakeZ
 # Edited by ItzCookies_
 
@@ -23,6 +23,23 @@ options:
 
 	tban_permission: Bans.tban
 
+	help_permission: Bans.help
+
+
+command //wchelp:
+	trigger:
+		if player has permission "{@help_permission}":
+			send "{@prefix} &cVersion 1.1"
+			send "&b//ban <player> <reason> - Bans the player that you want to ban and creates a ban ID."
+			send "&b//banip <player> <reason> - Bans the IP of the player that you want to ban and creates a ban ID."
+			send "&b//unban <player> - Unbans the player that you want to unban and removes the ban ID."
+			send "&b//kick <player> <reason> - Kicks the player that you want to kick."
+			send "&b//baninfo <player> - Check why a player is banned, show why a player is banned and more."
+			send "&b//banidinfo <ban ID> - Check why a player is banned, show why a player is banned and more using a ban ID."
+			send "&bGithub Repository: https://github.com/ItzCookies/Minecraft-Skript-Watchcat"
+			send "&bPlease update when there is a new update if you want to. There might be bug fixes and more."
+		else:
+			send "{@prefix} No permission"
 
 command //ban [<Offlineplayer>] [<Text>]:
 	trigger:
@@ -170,7 +187,9 @@ command //banidinfo [<Text>]:
 				send "&c&lExpiration&7: %{banID.expire.%arg 1%}%"
 				send "&c&lBanned player&7: %{BanIDPlayer.%arg 1%}%"
 				send "&7&m------------------------"
+			else:
+				send "{@prefix} &c//BanIdInfo <Ban ID>"
 		else:
-			send "{@prefix} &c//BanIdInfo <Ban ID>"
+			send "{@prefix} &cNo permission"
 
 					
