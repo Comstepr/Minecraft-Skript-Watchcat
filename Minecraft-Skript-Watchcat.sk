@@ -8,8 +8,8 @@ variables:
 
 
 options:
-	prefix: &7&l[&c&lWatchcat&7&l]
 
+	prefix: &7&l[&c&lWatchcat&7&l]
 
 #-------------[DO NOT CHANGE ANYTHING BELOW THIS LINE]-------------
 
@@ -69,7 +69,7 @@ command //ban [<Offlineplayer>] [<Text>]:
 					set {BanIDIP.%{BanID.%arg 1%}%} to "False"
 					set {BanIDPlayer.%{BanID.%arg 1%}%} to "%arg 1%"
 					kick arg 1 due to "&0[&cWATCHCAT&0] &cYou have been banned. &cBanned by: &c%player%&c &cReason: &c%arg 2%. &cBan ID: &c%{BanID.%arg 1%}%"
-					ban arg 1 due to "&0[&cWATCHCAT&0] &cYou have been banned for &c%arg 2% &c by &c%player%&c"
+					ban arg 1 due to "&0[&cWATCHCAT&0] &cYou have been banned. &cBanned by: &c%player%&c &cReason: &c%arg 2%. &cBan ID: &c%{BanID.%arg 1%}%"
 					loop all players:
 						loop-player has permission "{@notify_permission}"
 						send "{@prefix} &c%player% &7banned &c%arg 1% &7Reason: &c%arg 2%" to loop-player
@@ -369,3 +369,38 @@ command //reset:
 		else:
 			send "{@NoPermissionError}"
 		
+
+command //tempban [<Offlineplayer>] [<Text>] [<Text>]:
+	trigger:
+		if player has permission "{@ban_permission}":
+			if arg 1 is set:
+				if arg 2 is set:
+					if arg 3 is set:
+						set {banned.%arg 1%} to true
+						set {ban.time.%arg 1%} to now
+						set {ban.reason.%arg 1%} to argument-2
+						set {ban.expire.%arg 1%} to "%arg-2% from ban time"
+						set {ban.bannedby.%arg 1%} to player
+						set {BanIP.%arg 1%} to "False"
+						add 1 to {BanID}
+						set {BanID.%arg 1%} to {BanID}
+						set {bannedID.%{BanID.%arg 1%}%} to true
+						set {banID.time.%{BanID.%arg 1%}%} to now
+						set {banID.reason.%{BanID.%arg 1%}%} to argument-3
+						set {banID.expire.%{BanID.%arg 1%}%} to "%arg-2% from ban time"
+						set {banID.bannedby.%{BanID.%arg 1%}%} to player
+						set {BanIDIP.%{BanID.%arg 1%}%} to "False"
+						set {BanIDPlayer.%{BanID.%arg 1%}%} to "%arg 1%"
+						kick arg 1 due to "&0[&cWATCHCAT&0] &cYou have been temporarily banned. &cBanned by: &c%player%&c &cReason: &c%arg 3%. &cBan ID: &c%{BanID.%arg 1%}% &cBan time: {ban.time.%arg 1%} &cBan expires in: %arg 2% from ban time"
+						execute console command "/essentials:tempban %arg 1% %arg 2% &0[&cWATCHCAT&0] &cYou have been temporarily banned. &cBanned by: &c%player%&c &cReason: &c%arg 3%. &cBan ID: &c%{BanID.%arg 1%}%"
+						loop all players:
+							loop-player has permission "{@notify_permission}"
+							send "{@prefix} &c%player% &7temporarilly banned &c%arg 1% &7Reason: &c%arg 3%" to loop-player
+					else:
+						send "{@prefix} &c//TempBan <Player> <Duration> <Reason>"
+				else:
+					send "{@prefix} &c//TempBan <Player> <Duration> <Reason>"
+			else:
+				send "{@prefix} &c//TempBan <Player> <Duration> <Reason>"
+		else:
+			send "{@prefix} &cNo permission"
