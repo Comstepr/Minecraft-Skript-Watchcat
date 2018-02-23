@@ -26,6 +26,7 @@ Permission to reset reports: *
 Plugins required:
 
 Essentials
+SkQuery
 
 If you are using this Skript script:
 
