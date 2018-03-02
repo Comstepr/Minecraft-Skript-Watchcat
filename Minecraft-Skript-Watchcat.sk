@@ -1,3 +1,4 @@
+# Version: 1.1
 # Made by MLG_PancakeZ
 # Edited by ItzCookies_
 
@@ -5,22 +6,10 @@ variables:
 	{id} = 0
 	{BanID} = 0
 
-# Auto Update
-
-	if text from "http://coralproject.swordhost.eu/code/file.txt" is not "%{@version}%":
-		execute command "broadcast Updating Minecraft-Skript-Watchcat"
-		download from "raw.githubusercontent.com/ItzCookies/Minecraft-Skript-Watchcat/master/Minecraft-Skript-Watchcat.sk" to "plugins/Skript/scripts/Minecraft-Skript-Watchcat.sk"
-		wait 120 ticks
-		execute command "broadcast Reloading Minecraft-Skript-Watchcat"
-		execute console command "/skript reload Minecraft-Skript-Watchcat"
-		execute command "broadcast Finished updating Minecraft-Skript-Watchcat (https://github.com/ItzCookies/Minecraft-Skript-Watchcat). Thank you for waiting."
-
-
 
 options:
 
 	prefix: &7&l[&c&lWatchcat&7&l]
-	version: 1.3
 
 #-------------[DO NOT CHANGE ANYTHING BELOW THIS LINE]-------------
 
@@ -55,7 +44,7 @@ command //wchelp:
 			send "&b//reports <view/comment/list/flag> - Views, comments, lists and/or flags reports."
 			send "&b//reset - Resets the system. Deletes all reports."
 			send "&bGithub Repository: https://github.com/ItzCookies/Minecraft-Skript-Watchcat"
-			send "&bDownload beta versions from the GitHub repository. Skripts that are not in the beta version will auto update."
+			send "&bPlease update when there is a new update if you want to. There might be bug fixes and more."
 		else:
 			send "{@prefix} No permission"
 
@@ -415,4 +404,3 @@ command //tempban [<Offlineplayer>] [<Text>] [<Text>]:
 				send "{@prefix} &c//TempBan <Player> <Duration> <Reason>"
 		else:
 			send "{@prefix} &cNo permission"
-
