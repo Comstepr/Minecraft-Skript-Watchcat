@@ -10,7 +10,7 @@ MLG_PancakeZ (MLG_PancakeZ developed the Skript. I just downloaded it and edited
 Essentials (Some commands in this Skript use some Essentials's commands.)
 simonsejse (This player made the Skript that adds reporting players. https://www.spigotmc.org/resources/report-skript-advanced.28487/)
 Laxer2117 (This player made the Skript that adds a chat bot. https://www.spigotmc.org/resources/skript-kyle-the-noob-response-bot.6884/)
-marek327 (This player made the Skript that adds auto updating. https://www.spigotmc.org/resources/simple-home-script-1-9-1-8-with-gui-1-9-and-auto-update.19829/)
+
 Permissions:
 
 Ban and temporary ban permission: Bans.ban
