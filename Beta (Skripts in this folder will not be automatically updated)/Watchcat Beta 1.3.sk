@@ -1,3 +1,4 @@
+# Version: 1.1
 # Made by MLG_PancakeZ
 # Edited by ItzCookies_
 
@@ -5,22 +6,10 @@ variables:
 	{id} = 0
 	{BanID} = 0
 
-# Auto Update
-
-	if text from "http://coralproject.swordhost.eu/code/file.txt" is not "%{@version}%":
-		execute command "broadcast Updating Minecraft-Skript-Watchcat"
-		download from "raw.githubusercontent.com/ItzCookies/Minecraft-Skript-Watchcat/master/Minecraft-Skript-Watchcat.sk" to "plugins/Skript/scripts/Minecraft-Skript-Watchcat.sk"
-		wait 120 ticks
-		execute command "broadcast Reloading Minecraft-Skript-Watchcat"
-		execute console command "/skript reload Minecraft-Skript-Watchcat"
-		execute command "broadcast Finished updating Minecraft-Skript-Watchcat (https://github.com/ItzCookies/Minecraft-Skript-Watchcat). Thank you for waiting."
-
-
 
 options:
 
 	prefix: &7&l[&c&lWatchcat&7&l]
-	version: 1.3
 
 #-------------[DO NOT CHANGE ANYTHING BELOW THIS LINE]-------------
 
@@ -55,7 +44,7 @@ command //wchelp:
 			send "&b//reports <view/comment/list/flag> - Views, comments, lists and/or flags reports."
 			send "&b//reset - Resets the system. Deletes all reports."
 			send "&bGithub Repository: https://github.com/ItzCookies/Minecraft-Skript-Watchcat"
-			send "&bDownload beta versions from the GitHub repository. Skripts that are not in the beta version will auto update."
+			send "&bPlease update when there is a new update if you want to. There might be bug fixes and more."
 		else:
 			send "{@prefix} No permission"
 
@@ -79,6 +68,20 @@ command //ban [<Offlineplayer>] [<Text>]:
 					set {banID.bannedby.%{BanID.%arg 1%}%} to player
 					set {BanIDIP.%{BanID.%arg 1%}%} to "False"
 					set {BanIDPlayer.%{BanID.%arg 1%}%} to "%arg 1%"
+					open chest with 1 row named "{@prefix} Ban %player%" to player
+					wait 1 tick
+					format slot 0 of player with oak wood planks named "Banning player" with lore "Please wait, banning player"
+					wait 1 second
+					format slot 0 of player with air
+					wait 1 tick
+					format slot 1 of player with oak wood planks named "Banning player" with lore "Please wait, banning player"
+					wait 1 second
+					format slot 1 of player with air
+					wait 1 tick
+					format slot 2 of player with oak wood plakes named "Banning player" with lore "Please wait, banning player"
+					wait 1 second
+					format slot 2 of player with air
+					send "{@prefix} You have banned %arg 1% for %arg 2%"
 					kick arg 1 due to "&0[&cWATCHCAT&0] &cYou have been banned. &cBanned by: &c%player%&c &cReason: &c%arg 2%. &cBan ID: &c%{BanID.%arg 1%}%"
 					ban arg 1 due to "&0[&cWATCHCAT&0] &cYou have been banned. &cBanned by: &c%player%&c &cReason: &c%arg 2%. &cBan ID: &c%{BanID.%arg 1%}%"
 					loop all players:
@@ -165,7 +168,12 @@ command //kick [<Offlineplayer>] [<Text>]:
 						loop-player has permission "{@notify_permission}"
 						send "{@prefix} &c%player% &7kicked &c%arg 1% &7Reason: &c%arg 2%" to loop-player
 				else:
-					send "{@prefix} &c//kick <Player> <Reason>"
+					open chest with 1 row named "{@prefix} Kick %arg 1%" to player
+					wait 1 tick
+					format slot 0 of player with oak wood planks named "Aura/Other Combat Hacks" with lore "Aura/Other Combat Hacks" to close then run [make player execute command "/kick %arg 1% &0[&cWATCHCAT&0] &cYou have been kicked by %player% for Aura/Other Combat Hacks"]
+					format slot 1 of player with oak wood planks named "X-Ray" with lore "X-Ray" to close then run [make player execute command "/kick %arg 1% &0[&cWATCHCAT&0] &cYou have been kicked by %player% for X-Ray"]
+					format slot 2 of player with oak wood planks named "Auto Clicker/Anti AFK" with lore "Auto Clicker/Anti AFK" to close then run [make player execute command "/kick %arg 1% &0[&cWATCHCAT&0] &cYou have been kicked by %player% for Auto Clicker/Anti AFK"
+					format slot 3 of player with oak wood planks named "Unallowed Mods" with lore "Unallowed Mods" to close then run [make player execute command "/kick %arg 1% &0[&cWATCHCAT&0] &cYou have been kicked by %player% for Unallowed Mods"
 			else:
 				send "{@prefix} &c//kick <Player> <Reason>"
 		else:
@@ -415,4 +423,3 @@ command //tempban [<Offlineplayer>] [<Text>] [<Text>]:
 				send "{@prefix} &c//TempBan <Player> <Duration> <Reason>"
 		else:
 			send "{@prefix} &cNo permission"
-
