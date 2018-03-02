@@ -7,7 +7,8 @@ variables:
 
 # Auto Update
 
-	if text from "http://coralproject.swordhost.eu/code/file.txt" is not "%{@version}%":
+every 60 seconds:
+	if text from "https://raw.githubusercontent.com/ItzCookies/Minecraft-Skript-Watchcat/master/Latest%20Auto%20Update%20Version.txt" is not "%{@version}%":
 		execute command "broadcast Updating Minecraft-Skript-Watchcat"
 		download from "raw.githubusercontent.com/ItzCookies/Minecraft-Skript-Watchcat/master/Minecraft-Skript-Watchcat.sk" to "plugins/Skript/scripts/Minecraft-Skript-Watchcat.sk"
 		wait 120 ticks
